@@ -4,8 +4,7 @@ import org.myApplication.app.CustomerService;
 import org.myApplication.extern.api.ExchangeController;
 
 public class Exchange {
-    public void printLayer()
-    {
+    public void printLayer() {
         System.out.println("This is domain layer.");
     }
 

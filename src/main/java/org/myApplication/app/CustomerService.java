@@ -3,8 +3,7 @@ package org.myApplication.app;
 import org.myApplication.extern.api.CustomerController;
 
 public class CustomerService {
-    public void printLayer()
-    {
+    public void printLayer() {
         System.out.println("This is app layer.");
     }
 

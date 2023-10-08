@@ -3,8 +3,7 @@ package org.myApplication.domain;
 import org.myApplication.extern.api.CustomerController;
 
 public class Customer {
-    public void printLayer()
-    {
+    public void printLayer() {
         System.out.println("This is domain layer.");
     }
 

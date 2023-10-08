@@ -3,8 +3,7 @@ package org.myApplication.extern.api;
 import org.myApplication.app.CustomerService;
 
 public class ExchangeController {
-    public void printLayer()
-    {
+    public void printLayer() {
         System.out.println("This is extern layer.");
     }
 
