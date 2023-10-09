@@ -1,15 +1,19 @@
 package org.myApplication.app;
 
-import org.myApplication.extern.api.CustomerController;
+import org.myApplication.domain.CustomerDto;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CustomerService {
-    public void printLayer() {
-        System.out.println("This is app layer.");
-    }
+    @Value("${user.nickname}")
+    private String customerNickname;
+    @Value("${user.password}")
+    private String customerPassword;
 
-//    public void connectionToExternLayer() // Нарушает то, что app не может обращаться к extern. Тест падает.
-//    {
-//        CustomerController customerController = new CustomerController();
-//        customerController.printLayer();
-//    }
+    public CustomerDto fillInformationCustomer(CustomerDto customerDto) {
+        customerDto.setNickname(customerNickname);
+        customerDto.setPassword(customerPassword);
+        return customerDto;
+    }
 }

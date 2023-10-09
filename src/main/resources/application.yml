@@ -1,0 +1,32 @@
+server:
+  port:
+    6281
+
+spring:
+  profiles:
+    active: test
+
+---
+spring:
+  config:
+    activate:
+      on-profile: development
+user:
+  nickname: testName1
+  password: testSurname1
+---
+spring:
+  config:
+    activate:
+      on-profile: product
+user:
+  nickname: testName2
+  password: testSurname2
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+user:
+  nickname: testName3
+  password: testSurname3

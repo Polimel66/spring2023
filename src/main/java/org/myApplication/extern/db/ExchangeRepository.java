@@ -3,13 +3,13 @@ package org.myApplication.extern.db;
 import org.myApplication.app.CustomerService;
 
 public class ExchangeRepository {
-    public void printLayer() {
-        System.out.println("This is extern layer.");
-    }
-
-    public void connectionToAppLayer() // Не нарушает архитектуру. Тест проходит.
-    {
-        CustomerService customerService = new CustomerService();
-        customerService.printLayer();
-    }
+//    public void printLayer() {
+//        System.out.println("This is extern layer.");
+//    }
+//
+//    public void connectionToAppLayer() // Не нарушает архитектуру. Тест проходит.
+//    {
+//        CustomerService customerService = new CustomerService();
+//        customerService.printLayer();
+//    }
 }
