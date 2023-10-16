@@ -13,7 +13,7 @@ public class ArchUnitTests {
     final ArchRule isLayeredArchitectureRespected = layeredArchitecture().consideringAllDependencies()
             .layer("app").definedBy(packageName + ".app..")
             .layer("domain").definedBy(packageName + ".domain..")
-            .layer("extern").definedBy(packageName + ".extern.api..", packageName + ".extern.db..")
+            .layer("extern").definedBy(packageName + ".extern..")
             .whereLayer("extern").mayNotBeAccessedByAnyLayer()
             .whereLayer("app").mayOnlyBeAccessedByLayers("extern")
             .whereLayer("domain").mayOnlyBeAccessedByLayers("extern", "app");
