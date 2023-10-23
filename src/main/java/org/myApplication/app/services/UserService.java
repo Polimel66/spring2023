@@ -16,37 +16,37 @@ public class UserService implements org.myApplication.app.interfaces.UserService
     private final UserRepository userRepository;
 
     @Override
-    public User saveUser(User user) { // сохраняет нового пользователя в базу данных
+    public User saveUser(User user) {
         log.info("Новый пользователь успешно сохранен");
         return userRepository.save(user);
     }
 
     @Override
-    public void deleteUserById(Long id) { // удаляет пользователя по id из базы данных
+    public void deleteUserById(Long id) {
         userRepository.deleteById(id);
         log.info("Пользователь успешно удален");
     }
 
     @Override
-    public Optional<User> findUserById(Long id) { // возвращает пользователя из базы данных по id
+    public Optional<User> findUserById(Long id) {
         log.info("Пользователь с id - {} успешно найден", id);
         return userRepository.findById(id);
     }
 
     @Override
-    public List<User> findAllUsers() { // возвращает всех пользователей, находящихся в базе данных
+    public List<User> findAllUsers() {
         log.info("Все пользователи из базы успешно найдены");
         return userRepository.findAll();
     }
 
     @Override
-    public void deleteAllUsers() { // удаляет всех пользователей, находящихся в базе данных
+    public void deleteAllUsers() {
         userRepository.deleteAll();
         log.info("Все пользователи успешно удалены из базы данных");
     }
 
     @Override
-    public User changeUser(User changedUser) { // изменяет данные пользователя в базе данных
+    public User changeUser(User changedUser) {
         log.info("Данные заданного пользователя успешно изменены");
         return userRepository.save(changedUser);
     }

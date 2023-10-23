@@ -1,15 +1,14 @@
 package org.myApplication.app;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Generated;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 @Entity
 @Table(name = "users")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class User implements org.myApplication.domain.interfaces.User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +24,6 @@ public class User implements org.myApplication.domain.interfaces.User {
     private String city;
     @Column(name = "user_district")
     private String district;
+//    @OneToMany(mappedBy = "user")
+//    private List<Book> books;
 }
