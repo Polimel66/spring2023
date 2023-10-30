@@ -3,6 +3,9 @@ package org.myApplication.app;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "users")
@@ -24,6 +27,6 @@ public class User implements org.myApplication.domain.interfaces.User {
     private String city;
     @Column(name = "user_district")
     private String district;
-//    @OneToMany(mappedBy = "user")
-//    private List<Book> books;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookOwner")
+    private List<Book> books = new ArrayList<>();
 }

@@ -1,8 +1,9 @@
 package org.myApplication.app.interfaces;
 
 import org.myApplication.app.Book;
-import org.myApplication.app.User;
+import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BookService {
@@ -35,5 +36,13 @@ public interface BookService {
      * @param changedBook книга с измененными данными
      * @return возвращает измененную книгу
      */
-    User changeBook(Book changedBook);
+    Book changeBook(Book changedBook);
+
+    /**
+     * Метод получения всех книг из базы данных, есть возможность вывести определенную страницу
+     * и определенное количество записей
+     * @return возвращает либо список всех книг из базы данных, либо список книг с
+     * определенной страницы в заданном количестве
+     */
+    List<Book> findAllBooks(PageRequest pageRequest);
 }

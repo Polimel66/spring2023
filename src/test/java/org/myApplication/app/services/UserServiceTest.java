@@ -24,14 +24,14 @@ public class UserServiceTest {
 
     @Test
     void changeUser() {
-        userService.saveUser(new User(1L, "Bob", "boB7523", "@BobTg", "Moscow", "Oktyabrsky"));
-        userService.changeUser(new User(1L, "Bob", "11111", "@BobTg", "Moscow", "Oktyabrsky"));
+        userService.saveUser(new User(1L, "Bob", "boB7523", "@BobTg", "Moscow", "Oktyabrsky", new ArrayList<>()));
+        userService.changeUser(new User(1L, "Bob", "11111", "@BobTg", "Moscow", "Oktyabrsky", new ArrayList<>()));
         assertEquals("11111", userService.findUserById(1L).get().getPassword());
     }
 
     @Test
     void saveUser() {
-        User user = new User(1L, "SaveTestNick321", "SaveTest128956", "@SaveTestTg", "SaveMoscow", "SaveOktyabrsky");
+        User user = new User(1L, "SaveTestNick321", "SaveTest128956", "@SaveTestTg", "SaveMoscow", "SaveOktyabrsky", new ArrayList<>());
         User dbUser = userService.saveUser(user);
         assertNotNull(dbUser);
         assertEquals("SaveTestNick321", dbUser.getNickname());
@@ -39,9 +39,9 @@ public class UserServiceTest {
 
     @Test
     void deleteAllUsers() {
-        var firstUser = new User(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky");
-        var secondUser = new User(2L, "TestBob321", "Test126236", "@TestTg2", "Moscow", "Oktyabrsky");
-        var thirdUser = new User(3L, "TestSem321", "Test1235986", "@TestTg3", "Moscow", "Oktyabrsky");
+        var firstUser = new User(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", new ArrayList<>());
+        var secondUser = new User(2L, "TestBob321", "Test126236", "@TestTg2", "Moscow", "Oktyabrsky", new ArrayList<>());
+        var thirdUser = new User(3L, "TestSem321", "Test1235986", "@TestTg3", "Moscow", "Oktyabrsky", new ArrayList<>());
         userService.saveUser(firstUser);
         userService.saveUser(secondUser);
         userService.saveUser(thirdUser);
@@ -51,7 +51,7 @@ public class UserServiceTest {
 
     @Test
     void findUserById() {
-        User user = new User(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky");
+        User user = new User(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", new ArrayList<>());
         userService.saveUser(user);
         var dbUser = userService.findUserById(1L);
         assertNotNull(dbUser);
@@ -60,9 +60,9 @@ public class UserServiceTest {
 
     @Test
     void findAllUsers() {
-        var firstUser = new User(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky");
-        var secondUser = new User(2L, "TestBob321", "Test126236", "@TestTg2", "Moscow", "Oktyabrsky");
-        var thirdUser = new User(3L, "TestSem321", "Test1235986", "@TestTg3", "Moscow", "Oktyabrsky");
+        var firstUser = new User(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", new ArrayList<>());
+        var secondUser = new User(2L, "TestBob321", "Test126236", "@TestTg2", "Moscow", "Oktyabrsky", new ArrayList<>());
+        var thirdUser = new User(3L, "TestSem321", "Test1235986", "@TestTg3", "Moscow", "Oktyabrsky", new ArrayList<>());
         userService.saveUser(firstUser);
         userService.saveUser(secondUser);
         userService.saveUser(thirdUser);
@@ -79,7 +79,7 @@ public class UserServiceTest {
 
     @Test
     void deleteUserById() {
-        userService.saveUser(new User(1L, "SaveTestNick321", "SaveTest128956", "@SaveTestTg", "SaveMoscow", "SaveOktyabrsky"));
+        userService.saveUser(new User(1L, "SaveTestNick321", "SaveTest128956", "@SaveTestTg", "SaveMoscow", "SaveOktyabrsky", new ArrayList<>()));
         userService.deleteUserById(1L);
         assertEquals(new ArrayList<User>(), userService.findAllUsers());
     }

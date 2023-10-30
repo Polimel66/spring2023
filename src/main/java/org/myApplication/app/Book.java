@@ -1,5 +1,6 @@
 package org.myApplication.app;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +28,8 @@ public class Book implements org.myApplication.domain.interfaces.Book {
     private int bookCondition;
     @Column(name = "text_book_condition")
     private String textBookCondition;
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User bookOwner;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "user_id")
+    private User bookOwner;
 }

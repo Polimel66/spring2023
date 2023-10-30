@@ -1,6 +1,7 @@
 package org.myApplication.extern;
 
 import lombok.AllArgsConstructor;
+import org.myApplication.app.Book;
 import org.myApplication.app.User;
 import org.myApplication.app.interfaces.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -42,5 +43,10 @@ public class UserController {
     @GetMapping
     public List<User> findAllUsers() {
         return userService.findAllUsers();
+    }
+
+    @GetMapping("/getBooks/{id}")
+    public List<Book> getBooks(@PathVariable("id") Long id) {
+        return userService.findUserById(id).get().getBooks();
     }
 }
