@@ -2,9 +2,11 @@ package org.myApplication.app;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.myApplication.domain.enums.Role;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -29,4 +31,9 @@ public class User implements org.myApplication.domain.interfaces.User {
     private String district;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookOwner")
     private List<Book> books = new ArrayList<>();
+//    private boolean active;
+//    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+//    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+//    @Enumerated(EnumType.STRING)
+//    private Set<Role> roles;
 }

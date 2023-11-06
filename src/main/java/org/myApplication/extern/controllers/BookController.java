@@ -1,4 +1,4 @@
-package org.myApplication.extern;
+package org.myApplication.extern.controllers;
 
 import lombok.AllArgsConstructor;
 import org.myApplication.app.Book;
