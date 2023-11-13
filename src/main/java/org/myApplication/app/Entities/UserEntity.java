@@ -1,12 +1,10 @@
-package org.myApplication.app;
+package org.myApplication.app.Entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.myApplication.domain.enums.Role;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 
 @Entity
@@ -14,7 +12,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements org.myApplication.domain.interfaces.User {
+public class UserEntity implements org.myApplication.domain.interfaces.User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -29,11 +27,6 @@ public class User implements org.myApplication.domain.interfaces.User {
     private String city;
     @Column(name = "user_district")
     private String district;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookOwner")
-    private List<Book> books = new ArrayList<>();
-//    private boolean active;
-//    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-//    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-//    @Enumerated(EnumType.STRING)
-//    private Set<Role> roles;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookOwner", cascade = CascadeType.ALL)
+    private List<BookEntity> books = new ArrayList<>();
 }

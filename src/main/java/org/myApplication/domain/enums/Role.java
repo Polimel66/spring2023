@@ -1,5 +1,15 @@
 package org.myApplication.domain.enums;
 
+/**
+ * Enum из списка ролей доступа
+ */
 public enum Role {
-    USER;
+    /**
+     * Пользователь
+     */
+    USER,
+    /**
+     * Администратор
+     */
+    ADMIN
 }

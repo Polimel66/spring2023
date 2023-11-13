@@ -1,4 +1,4 @@
-package org.myApplication.app;
+package org.myApplication.app.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book implements org.myApplication.domain.interfaces.Book {
+public class BookEntity implements org.myApplication.domain.interfaces.Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
@@ -28,8 +28,8 @@ public class Book implements org.myApplication.domain.interfaces.Book {
     private int bookCondition;
     @Column(name = "text_book_condition")
     private String textBookCondition;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     @JoinColumn(name = "user_id")
-    private User bookOwner;
+    private UserEntity bookOwner;
 }
