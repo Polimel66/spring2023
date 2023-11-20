@@ -1,6 +1,5 @@
 package org.myApplication.domain.interfaces;
 
-import java.util.List;
 
 /**
  * Интерфейс основного класса, реализующего понятие пользователь
@@ -42,5 +41,23 @@ public interface User {
      * @return возвращает район проживания
      */
     String getDistrict();
+
+    /**
+     * Метод удаления книги через пользователя.
+     * Метод необходим для решения проблем Hibernate
+     * при двусторонних связях.
+     *
+     * @param book книга, которую необходимо удалить
+     */
+    void removeBook(Book book);
+
+    /**
+     * Метод добавления книги через пользователя.
+     * Метод необходим для решения проблем Hibernate
+     * при двусторонних связях.
+     *
+     * @param book добавляемая книга
+     */
+    void addBook(Book book);
 //    List<Genres> getFavoriteGenres(); пока думаю как правильнее сделать, список любимых жанров
 }

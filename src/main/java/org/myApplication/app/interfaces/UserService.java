@@ -43,8 +43,9 @@ public interface UserService {
 
     /**
      * Метод изменения данных пользователя в базе данных
+     *
      * @param changedUser измененный пользователь
-     * @param userId идентификатор изменяемого пользователя
+     * @param userId      идентификатор изменяемого пользователя
      * @return возвращает измененного пользователя
      */
     UserEntity changeUser(UserEntity changedUser, Long userId);

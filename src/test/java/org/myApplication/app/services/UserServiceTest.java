@@ -63,9 +63,9 @@ public class UserServiceTest {
         var firstUser = new UserEntity(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", new ArrayList<>());
         var secondUser = new UserEntity(2L, "TestBob321", "Test126236", "@TestTg2", "Moscow", "Oktyabrsky", new ArrayList<>());
         var thirdUser = new UserEntity(3L, "TestSem321", "Test1235986", "@TestTg3", "Moscow", "Oktyabrsky", new ArrayList<>());
-        userService.saveUser(firstUser);
-        userService.saveUser(secondUser);
-        userService.saveUser(thirdUser);
+        firstUser = userService.saveUser(firstUser);
+        secondUser = userService.saveUser(secondUser);
+        thirdUser = userService.saveUser(thirdUser);
 
         List<UserEntity> usersList = new ArrayList<>();
         usersList.add(firstUser);
@@ -74,7 +74,7 @@ public class UserServiceTest {
 
         var dbUsers = userService.findAllUsers();
         assertNotNull(dbUsers);
-        assertEquals(usersList, dbUsers);
+        assertIterableEquals(usersList, dbUsers);
     }
 
     @Test

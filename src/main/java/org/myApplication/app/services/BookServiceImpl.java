@@ -1,10 +1,11 @@
 package org.myApplication.app.services;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.myApplication.app.entity.BookEntity;
 import org.myApplication.app.repositories.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.myApplication.app.repositories.UserRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -14,23 +15,26 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class BookServiceImpl implements org.myApplication.app.interfaces.BookService {
-    @Autowired
-    private BookRepository bookRepository;
-    @Autowired
-    private UserServiceImpl userService;
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
     @Override
     public BookEntity saveBook(BookEntity book, Long userId) {
-        book.setBookOwner(userService.findUserById(userId).get());
-        var savedBook = bookRepository.save(book);
+        var user = userRepository.findById(userId).get();
+        user.addBook(book);
+        userRepository.save(user);
         log.info("Новая книга успешно сохранена");
-        return savedBook;
+        return book;
     }
 
     @Override
     public void deleteBookById(Long id) {
-        bookRepository.deleteById(id);
+        var book = bookRepository.findById(id).get();
+        var user = book.getBookOwner();
+        user.removeBook(book);
+        userRepository.save(user);
         log.info("Книга успешно удалена");
     }
 

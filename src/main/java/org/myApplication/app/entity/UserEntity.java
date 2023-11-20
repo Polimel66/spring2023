@@ -2,6 +2,7 @@ package org.myApplication.app.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.myApplication.domain.interfaces.Book;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @Setter
+@EqualsAndHashCode(exclude = "books")
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity implements org.myApplication.domain.interfaces.User {
@@ -28,6 +31,18 @@ public class UserEntity implements org.myApplication.domain.interfaces.User {
     private String city;
     @Column(name = "user_district")
     private String district;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookOwner", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookOwner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookEntity> books = new ArrayList<>();
+
+    @Override
+    public void removeBook(Book book) {
+        books.remove((BookEntity) book);
+        ((BookEntity) book).setBookOwner(null);
+    }
+
+    @Override
+    public void addBook(Book book) {
+        books.add(((BookEntity) book));
+        ((BookEntity) book).setBookOwner(this);
+    }
 }

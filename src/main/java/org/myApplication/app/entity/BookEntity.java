@@ -27,7 +27,7 @@ public class BookEntity implements org.myApplication.domain.interfaces.Book {
     private int bookCondition;
     @Column(name = "text_book_condition")
     private String textBookCondition;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "user_id")
     private UserEntity bookOwner;
