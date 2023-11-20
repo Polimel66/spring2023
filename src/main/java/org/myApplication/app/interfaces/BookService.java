@@ -1,19 +1,19 @@
 package org.myApplication.app.interfaces;
 
-import org.myApplication.app.Book;
-import org.springframework.data.domain.PageRequest;
+import org.myApplication.app.entity.BookEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface BookService {
     /**
-     * Метод сохраняет новую книгу в базу данных
+     * Метод сохранения новой книги
      *
-     * @param book новая книга
+     * @param book   новая книга
+     * @param userId идентификатор пользователя, сохраняющего книгу
      * @return возвращает сохраненную книгу
      */
-    Book saveBook(Book book);
+    BookEntity saveBook(BookEntity book, Long userId);
 
     /**
      * Метод удаляет книгу по id
@@ -28,21 +28,38 @@ public interface BookService {
      * @param id идентификатор книги, которую необходимо найти
      * @return возвращает полученную по id книгу
      */
-    Optional<Book> findBookById(Long id);
+    Optional<BookEntity> findBookById(Long id);
 
     /**
      * Метод изменения данных книги в базе данных
      *
-     * @param changedBook книга с измененными данными
+     * @param changedBook измененная книга
+     * @param userId      идентификатор изменяемой книги
      * @return возвращает измененную книгу
      */
-    Book changeBook(Book changedBook);
+    BookEntity changeBook(BookEntity changedBook, Long userId);
 
     /**
-     * Метод получения всех книг из базы данных, есть возможность вывести определенную страницу
-     * и определенное количество записей
-     * @return возвращает либо список всех книг из базы данных, либо список книг с
-     * определенной страницы в заданном количестве
+     * Метод постраничного получения книг из базы данных
+     *
+     * @param page             номер страницы
+     * @param numberEntries    количество записей
+     * @param sortingParameter параметр сортировки
+     * @param sortingDirection направление сортировки
+     * @return возвращает книги из бд по заданным параметрам
      */
-    List<Book> findAllBooks(PageRequest pageRequest);
+    List<BookEntity> findAllBooks(int page, int numberEntries, String sortingParameter, String sortingDirection);
+
+    /**
+     * Метод поиска книг по названию и/или автору, совпадающих
+     * или содержащих введенную строку
+     *
+     * @param searchStr        поисковая строка
+     * @param page             необходимая страница
+     * @param numberEntries    необходимое количество записей
+     * @param sortingParameter параметр сортировки
+     * @param sortingDirection направление сортировки
+     * @return список книг, соответствующих поисковому запросу
+     */
+    List<BookEntity> searchBooks(String searchStr, int page, int numberEntries, String sortingParameter, String sortingDirection);
 }

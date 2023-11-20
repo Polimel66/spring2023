@@ -1,6 +1,6 @@
 package org.myApplication.app.interfaces;
 
-import org.myApplication.app.User;
+import org.myApplication.app.entity.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +12,7 @@ public interface UserService {
      * @param user новый пользователь
      * @return возвращает сохраненного пользователя
      */
-    User saveUser(User user);
+    UserEntity saveUser(UserEntity user);
 
     /**
      * Метод удаления пользователя по id из базы данных
@@ -27,7 +27,7 @@ public interface UserService {
      * @param id идентификатор пользователя, которого нужно вернуть
      * @return возвращает найденного по id пользователя
      */
-    Optional<User> findUserById(Long id);
+    Optional<UserEntity> findUserById(Long id);
 
     /**
      * Метод удаления всех пользователей из базы данных
@@ -39,13 +39,13 @@ public interface UserService {
      *
      * @return возвращает список всех пользователей в базе данных
      */
-    List<User> findAllUsers();
+    List<UserEntity> findAllUsers();
 
     /**
      * Метод изменения данных пользователя в базе данных
-     *
-     * @param changedUser пользователь с измененными данными
+     * @param changedUser измененный пользователь
+     * @param userId идентификатор изменяемого пользователя
      * @return возвращает измененного пользователя
      */
-    User changeUser(User changedUser);
+    UserEntity changeUser(UserEntity changedUser, Long userId);
 }

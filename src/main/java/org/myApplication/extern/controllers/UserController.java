@@ -1,23 +1,29 @@
 package org.myApplication.extern.controllers;
 
-import lombok.AllArgsConstructor;
-import org.myApplication.app.Book;
-import org.myApplication.app.User;
 import org.myApplication.app.interfaces.UserService;
+import org.myApplication.extern.converters.BookConverter;
+import org.myApplication.extern.converters.UserConverter;
+import org.myApplication.extern.models.BookModel;
+import org.myApplication.extern.models.UserModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
-@AllArgsConstructor
 public class UserController {
+    @Autowired
     private UserService userService;
+    @Autowired
+    private UserConverter userConverter;
+    @Autowired
+    private BookConverter bookConverter;
 
     @PostMapping
-    public User saveUser(@RequestBody User newUser) {
-        return userService.saveUser(newUser);
+    public UserModel saveUser(@RequestBody UserModel newUser) {
+        return userConverter.toModel(userService.saveUser(userConverter.toEntity(newUser)));
     }
 
     @DeleteMapping("/{id}")
@@ -31,22 +37,24 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getUser(@PathVariable("id") Long id) {
-        return userService.findUserById(id);
+    public UserModel getUser(@PathVariable("id") Long id) {
+        return userConverter.toModel(userService.findUserById(id).get());
     }
 
-    @PutMapping
-    public User changeUser(User changedUser) {
-        return userService.changeUser(changedUser);
+    @PutMapping("/{userId}")
+    public UserModel changeUser(@RequestBody UserModel changedUser, @PathVariable("userId") Long id) {
+        return userConverter.toModel(userService.changeUser(userConverter.toEntity(changedUser), id));
     }
 
     @GetMapping
-    public List<User> findAllUsers() {
-        return userService.findAllUsers();
+    public List<UserModel> findAllUsers() {
+        return userService.findAllUsers().stream().map(userEntity -> userConverter
+                .toModel(userEntity)).collect(Collectors.toList());
     }
 
     @GetMapping("/getBooks/{id}")
-    public List<Book> getBooks(@PathVariable("id") Long id) {
-        return userService.findUserById(id).get().getBooks();
+    public List<BookModel> getBooks(@PathVariable("id") Long id) {
+        return userService.findUserById(id).get().getBooks().stream()
+                .map(bookEntity -> bookConverter.toModel(bookEntity)).collect(Collectors.toList());
     }
 }

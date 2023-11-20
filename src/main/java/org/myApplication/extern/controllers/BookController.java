@@ -1,29 +1,25 @@
 package org.myApplication.extern.controllers;
 
-import lombok.AllArgsConstructor;
-import org.myApplication.app.Book;
-import org.myApplication.app.User;
 import org.myApplication.app.interfaces.BookService;
-import org.myApplication.app.interfaces.UserService;
-import org.springframework.data.domain.PageRequest;
+import org.myApplication.extern.converters.BookConverter;
+import org.myApplication.extern.models.BookModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/book")
-@AllArgsConstructor
 public class BookController {
+    @Autowired
     private BookService bookService;
+    @Autowired
+    private BookConverter bookConverter;
 
-    private UserService userService;
-
-    @PostMapping("/saveBook/{userId}")
-    public Book saveBook(@RequestBody Book book, @PathVariable Long userId) {
-        Optional<User> user = userService.findUserById(userId);
-        book.setBookOwner(user.get());
-        return bookService.saveBook(book);
+    @PostMapping("/save/{userId}")
+    public BookModel saveBook(@RequestBody BookModel book, @PathVariable Long userId) {
+        return bookConverter.toModel(bookService.saveBook(bookConverter.toEntity(book), userId));
     }
 
     @DeleteMapping("/{id}")
@@ -32,18 +28,32 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Book> getBook(@PathVariable("id") Long id) {
-        return bookService.findBookById(id);
+    public BookModel getBook(@PathVariable("id") Long id) {
+        return bookConverter.toModel(bookService.findBookById(id).get());
     }
 
     @GetMapping("/findAll")
-    public List<Book> getAllBooks(@RequestParam(required = false, defaultValue = "0") int page,
-                                  @RequestParam(required = false, defaultValue = "10") int numberEntries) {
-        return bookService.findAllBooks(PageRequest.of(page, numberEntries));
+    public List<BookModel> getAllBooks(@RequestParam(required = false, defaultValue = "0") int page,
+                                       @RequestParam(required = false, defaultValue = "10") int numberEntries,
+                                       @RequestParam(required = false, defaultValue = "title") String sortingParameter,
+                                       @RequestParam(required = false, defaultValue = "ASC") String sortingDirection) {
+        return bookService.findAllBooks(page, numberEntries, sortingParameter, sortingDirection).stream()
+                .map(bookEntity -> bookConverter.toModel(bookEntity)).collect(Collectors.toList());
     }
 
-    @PutMapping
-    public Book changeBook(Book changedBook) {
-        return bookService.changeBook(changedBook);
+    @GetMapping("/searchBook/{str}")
+    public List<BookModel> searchBooks(@PathVariable("str") String str,
+                                       @RequestParam(required = false, defaultValue = "0") int page,
+                                       @RequestParam(required = false, defaultValue = "10") int numberEntries,
+                                       @RequestParam(required = false, defaultValue = "title") String sortingParameter,
+                                       @RequestParam(required = false, defaultValue = "ASC") String sortingDirection) {
+        return bookService.searchBooks(str, page, numberEntries, sortingParameter, sortingDirection).stream()
+                .map(bookEntity -> bookConverter.toModel(bookEntity))
+                .collect(Collectors.toList());
+    }
+
+    @PutMapping("/{bookId}")
+    public BookModel changeBook(@RequestBody BookModel changedBook, @PathVariable("bookId") Long id) {
+        return bookConverter.toModel(bookService.changeBook(bookConverter.toEntity(changedBook), id));
     }
 }
