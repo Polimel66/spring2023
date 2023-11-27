@@ -2,7 +2,6 @@ package org.myApplication.app.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.myApplication.app.entity.UserEntity;
 import org.myApplication.app.repositories.UserRepository;
 import org.springframework.stereotype.Service;

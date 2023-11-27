@@ -1,6 +1,5 @@
 package org.myApplication.app.repositories;
 
-import lombok.var;
 import org.junit.jupiter.api.Test;
 import org.myApplication.app.entity.BookEntity;
 import org.myApplication.app.entity.UserEntity;

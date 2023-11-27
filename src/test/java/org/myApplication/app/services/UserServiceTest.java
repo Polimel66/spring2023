@@ -1,6 +1,5 @@
 package org.myApplication.app.services;
 
-import lombok.var;
 import org.junit.jupiter.api.Test;
 import org.myApplication.app.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;

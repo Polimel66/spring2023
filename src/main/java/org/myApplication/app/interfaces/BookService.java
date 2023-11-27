@@ -2,6 +2,8 @@ package org.myApplication.app.interfaces;
 
 import org.myApplication.app.entity.BookEntity;
 
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -42,24 +44,26 @@ public interface BookService {
     /**
      * Метод постраничного получения книг из базы данных
      *
-     * @param page             номер страницы
-     * @param numberEntries    количество записей
-     * @param sortingParameter параметр сортировки
-     * @param sortingDirection направление сортировки
+     * @param newPageable параметры пагинации
      * @return возвращает книги из бд по заданным параметрам
      */
-    List<BookEntity> findAllBooks(int page, int numberEntries, String sortingParameter, String sortingDirection);
+    List<BookEntity> findAllBooks(Pageable newPageable);
 
     /**
      * Метод поиска книг по названию и/или автору, совпадающих
      * или содержащих введенную строку
      *
-     * @param searchStr        поисковая строка
-     * @param page             необходимая страница
-     * @param numberEntries    необходимое количество записей
-     * @param sortingParameter параметр сортировки
-     * @param sortingDirection направление сортировки
+     * @param searchStr   поисковая строка
+     * @param newPageable параметры пагинации
      * @return список книг, соответствующих поисковому запросу
      */
-    List<BookEntity> searchBooks(String searchStr, int page, int numberEntries, String sortingParameter, String sortingDirection);
+    List<BookEntity> searchBooks(String searchStr, Pageable newPageable);
+
+    /**
+     * Метод получения отфильтрованных книг
+     *
+     * @param criteriaModel параметры фильтра
+     * @return список отфильтрованных книг
+     */
+    List<BookEntity> filterBooks(List<String> criteriaModel);
 }

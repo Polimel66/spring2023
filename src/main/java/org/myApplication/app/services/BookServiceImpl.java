@@ -2,11 +2,14 @@ package org.myApplication.app.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+import org.myApplication.app.filter.BookSpecification;
+import org.myApplication.app.filter.CriteriaModel;
 import org.myApplication.app.entity.BookEntity;
 import org.myApplication.app.repositories.BookRepository;
 import org.myApplication.app.repositories.UserRepository;
+import org.myApplication.domain.enums.Operation;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -62,20 +65,30 @@ public class BookServiceImpl implements org.myApplication.app.interfaces.BookSer
     }
 
     @Override
-    public List<BookEntity> findAllBooks(int page, int numberEntries, String sortingParameter, String sortingDirection) {
-        var result = bookRepository.findAllBooksByPageRequest(PageRequest.of(page, numberEntries,
-                Sort.by(Sort.Direction.valueOf(sortingDirection), sortingParameter)));
+    public List<BookEntity> findAllBooks(Pageable newPageable) {
+        var sortParameters = newPageable.getSort().toList().get(0);
+        var result = bookRepository.findAllBooksByPageRequest(PageRequest.of(newPageable.getPageNumber(), newPageable.getPageSize(),
+                Sort.by(sortParameters.getDirection(), sortParameters.getProperty())));
         log.info("Все нужные книги с заданной страницы найдены");
         return result;
     }
 
     @Override
-    public List<BookEntity> searchBooks(String str, int page, int numberEntries, String sortingParameter, String sortingDirection) {
+    public List<BookEntity> searchBooks(String str, Pageable newPageable) {
         var searchStr = "%" + str + "%";
+        var sortParameters = newPageable.getSort().toList().get(0);
         var result = bookRepository.findByTitleOrAuthorByPageRequest(searchStr, searchStr,
-                PageRequest.of(page, numberEntries, Sort.by(Sort.Direction.valueOf(sortingDirection),
-                        sortingParameter)));
+                PageRequest.of(newPageable.getPageNumber(), newPageable.getPageSize(), Sort.by(sortParameters.getDirection(),
+                        sortParameters.getProperty())));
         log.info("Книги по данному запросу найдены");
+        return result;
+    }
+
+    @Override
+    public List<BookEntity> filterBooks(List<String> criteriaModel) {
+        var result = bookRepository.findAll(new BookSpecification(
+                new CriteriaModel(criteriaModel.get(0), Operation.valueOf(criteriaModel.get(1)), criteriaModel.get(2))));
+        log.info("Книги найдены и отфильтрованы");
         return result;
     }
 }

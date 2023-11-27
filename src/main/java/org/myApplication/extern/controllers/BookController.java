@@ -4,6 +4,7 @@ import org.myApplication.app.interfaces.BookService;
 import org.myApplication.extern.converters.BookConverter;
 import org.myApplication.extern.models.BookModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,21 +34,15 @@ public class BookController {
     }
 
     @GetMapping("/findAll")
-    public List<BookModel> getAllBooks(@RequestParam(required = false, defaultValue = "0") int page,
-                                       @RequestParam(required = false, defaultValue = "10") int numberEntries,
-                                       @RequestParam(required = false, defaultValue = "title") String sortingParameter,
-                                       @RequestParam(required = false, defaultValue = "ASC") String sortingDirection) {
-        return bookService.findAllBooks(page, numberEntries, sortingParameter, sortingDirection).stream()
+    public List<BookModel> getAllBooks(Pageable newPageable) {
+        return bookService.findAllBooks(newPageable).stream()
                 .map(bookEntity -> bookConverter.toModel(bookEntity)).collect(Collectors.toList());
     }
 
     @GetMapping("/searchBook/{str}")
     public List<BookModel> searchBooks(@PathVariable("str") String str,
-                                       @RequestParam(required = false, defaultValue = "0") int page,
-                                       @RequestParam(required = false, defaultValue = "10") int numberEntries,
-                                       @RequestParam(required = false, defaultValue = "title") String sortingParameter,
-                                       @RequestParam(required = false, defaultValue = "ASC") String sortingDirection) {
-        return bookService.searchBooks(str, page, numberEntries, sortingParameter, sortingDirection).stream()
+                                       Pageable newPageable) {
+        return bookService.searchBooks(str, newPageable).stream()
                 .map(bookEntity -> bookConverter.toModel(bookEntity))
                 .collect(Collectors.toList());
     }
@@ -55,5 +50,11 @@ public class BookController {
     @PutMapping("/{bookId}")
     public BookModel changeBook(@RequestBody BookModel changedBook, @PathVariable("bookId") Long id) {
         return bookConverter.toModel(bookService.changeBook(bookConverter.toEntity(changedBook), id));
+    }
+
+    @GetMapping("/filter")
+    public List<BookModel> filterBooks(@RequestParam(required = false) List<String> criteriaModel) {
+        return bookService.filterBooks(criteriaModel).stream()
+                .map(bookEntity -> bookConverter.toModel(bookEntity)).collect(Collectors.toList());
     }
 }
