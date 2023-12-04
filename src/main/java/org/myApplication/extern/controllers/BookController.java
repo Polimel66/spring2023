@@ -1,5 +1,6 @@
 package org.myApplication.extern.controllers;
 
+import org.myApplication.app.filter.CriteriaModel;
 import org.myApplication.app.interfaces.BookService;
 import org.myApplication.extern.converters.BookConverter;
 import org.myApplication.extern.models.BookModel;
@@ -39,10 +40,10 @@ public class BookController {
                 .map(bookEntity -> bookConverter.toModel(bookEntity)).collect(Collectors.toList());
     }
 
-    @GetMapping("/searchBook/{str}")
-    public List<BookModel> searchBooks(@PathVariable("str") String str,
-                                       Pageable newPageable) {
-        return bookService.searchBooks(str, newPageable).stream()
+    @GetMapping("/searchBook")
+    public List<BookModel> searchBooks(Pageable newPageable,
+                                       @RequestBody List<CriteriaModel> criteriaModels) {
+        return bookService.searchBooks(newPageable, criteriaModels).stream()
                 .map(bookEntity -> bookConverter.toModel(bookEntity))
                 .collect(Collectors.toList());
     }
@@ -53,8 +54,8 @@ public class BookController {
     }
 
     @GetMapping("/filter")
-    public List<BookModel> filterBooks(@RequestParam(required = false) List<String> criteriaModel) {
-        return bookService.filterBooks(criteriaModel).stream()
+    public List<BookModel> filterBooks(@RequestBody List<CriteriaModel> criteriaModels) {
+        return bookService.filterBooks(criteriaModels).stream()
                 .map(bookEntity -> bookConverter.toModel(bookEntity)).collect(Collectors.toList());
     }
 }

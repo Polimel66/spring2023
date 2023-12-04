@@ -7,7 +7,6 @@ import org.myApplication.app.filter.CriteriaModel;
 import org.myApplication.app.entity.BookEntity;
 import org.myApplication.app.repositories.BookRepository;
 import org.myApplication.app.repositories.UserRepository;
-import org.myApplication.domain.enums.Operation;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -74,20 +73,21 @@ public class BookServiceImpl implements org.myApplication.app.interfaces.BookSer
     }
 
     @Override
-    public List<BookEntity> searchBooks(String str, Pageable newPageable) {
-        var searchStr = "%" + str + "%";
+    public List<BookEntity> searchBooks(Pageable newPageable, List<CriteriaModel> criteriaModels) {
         var sortParameters = newPageable.getSort().toList().get(0);
-        var result = bookRepository.findByTitleOrAuthorByPageRequest(searchStr, searchStr,
-                PageRequest.of(newPageable.getPageNumber(), newPageable.getPageSize(), Sort.by(sortParameters.getDirection(),
-                        sortParameters.getProperty())));
+        var generalCriteria = BookSpecification.getSpecificationFromListFilters(criteriaModels);
+        assert generalCriteria != null;
+        var result = bookRepository.findAll(generalCriteria, PageRequest.of(newPageable.getPageNumber(), newPageable.getPageSize(), Sort.by(sortParameters.getDirection(),
+                sortParameters.getProperty()))).toList();
         log.info("Книги по данному запросу найдены");
         return result;
     }
 
     @Override
-    public List<BookEntity> filterBooks(List<String> criteriaModel) {
-        var result = bookRepository.findAll(new BookSpecification(
-                new CriteriaModel(criteriaModel.get(0), Operation.valueOf(criteriaModel.get(1)), criteriaModel.get(2))));
+    public List<BookEntity> filterBooks(List<CriteriaModel> criteriaModels) {
+        var generalCriteria = BookSpecification.getSpecificationFromListFilters(criteriaModels);
+        assert generalCriteria != null;
+        var result = bookRepository.findAll(generalCriteria);
         log.info("Книги найдены и отфильтрованы");
         return result;
     }

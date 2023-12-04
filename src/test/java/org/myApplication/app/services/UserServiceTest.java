@@ -2,6 +2,7 @@ package org.myApplication.app.services;
 
 import org.junit.jupiter.api.Test;
 import org.myApplication.app.entity.UserEntity;
+import org.myApplication.domain.enums.Genres;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,14 +24,14 @@ public class UserServiceTest {
 
     @Test
     void changeUser() {
-        userService.saveUser(new UserEntity(1L, "Bob", "boB7523", "@BobTg", "Moscow", "Oktyabrsky", new ArrayList<>()));
-        userService.changeUser(new UserEntity(1L, "Bob", "11111", "@BobTg", "Moscow", "Oktyabrsky", new ArrayList<>()), 1L);
+        userService.saveUser(new UserEntity(1L, "Bob", "boB7523", "@BobTg", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>()));
+        userService.changeUser(new UserEntity(1L, "Bob", "11111", "@BobTg", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>()), 1L);
         assertEquals("11111", userService.findUserById(1L).get().getPassword());
     }
 
     @Test
     void saveUser() {
-        UserEntity user = new UserEntity(1L, "SaveTestNick321", "SaveTest128956", "@SaveTestTg", "SaveMoscow", "SaveOktyabrsky", new ArrayList<>());
+        UserEntity user = new UserEntity(1L, "SaveTestNick321", "SaveTest128956", "@SaveTestTg", "SaveMoscow", "SaveOktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
         UserEntity dbUser = userService.saveUser(user);
         assertNotNull(dbUser);
         assertEquals("SaveTestNick321", dbUser.getNickname());
@@ -38,9 +39,9 @@ public class UserServiceTest {
 
     @Test
     void deleteAllUsers() {
-        var firstUser = new UserEntity(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", new ArrayList<>());
-        var secondUser = new UserEntity(2L, "TestBob321", "Test126236", "@TestTg2", "Moscow", "Oktyabrsky", new ArrayList<>());
-        var thirdUser = new UserEntity(3L, "TestSem321", "Test1235986", "@TestTg3", "Moscow", "Oktyabrsky", new ArrayList<>());
+        var firstUser = new UserEntity(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
+        var secondUser = new UserEntity(2L, "TestBob321", "Test126236", "@TestTg2", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
+        var thirdUser = new UserEntity(3L, "TestSem321", "Test1235986", "@TestTg3", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
         userService.saveUser(firstUser);
         userService.saveUser(secondUser);
         userService.saveUser(thirdUser);
@@ -50,7 +51,7 @@ public class UserServiceTest {
 
     @Test
     void findUserById() {
-        UserEntity user = new UserEntity(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", new ArrayList<>());
+        UserEntity user = new UserEntity(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
         userService.saveUser(user);
         var dbUser = userService.findUserById(1L);
         assertNotNull(dbUser);
@@ -59,9 +60,9 @@ public class UserServiceTest {
 
     @Test
     void findAllUsers() {
-        var firstUser = new UserEntity(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", new ArrayList<>());
-        var secondUser = new UserEntity(2L, "TestBob321", "Test126236", "@TestTg2", "Moscow", "Oktyabrsky", new ArrayList<>());
-        var thirdUser = new UserEntity(3L, "TestSem321", "Test1235986", "@TestTg3", "Moscow", "Oktyabrsky", new ArrayList<>());
+        var firstUser = new UserEntity(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
+        var secondUser = new UserEntity(2L, "TestBob321", "Test126236", "@TestTg2", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
+        var thirdUser = new UserEntity(3L, "TestSem321", "Test1235986", "@TestTg3", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
         firstUser = userService.saveUser(firstUser);
         secondUser = userService.saveUser(secondUser);
         thirdUser = userService.saveUser(thirdUser);
@@ -78,7 +79,7 @@ public class UserServiceTest {
 
     @Test
     void deleteUserById() {
-        userService.saveUser(new UserEntity(1L, "SaveTestNick321", "SaveTest128956", "@SaveTestTg", "SaveMoscow", "SaveOktyabrsky", new ArrayList<>()));
+        userService.saveUser(new UserEntity(1L, "SaveTestNick321", "SaveTest128956", "@SaveTestTg", "SaveMoscow", "SaveOktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>()));
         userService.deleteUserById(1L);
         assertEquals(new ArrayList<UserEntity>(), userService.findAllUsers());
     }

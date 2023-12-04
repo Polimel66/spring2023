@@ -27,7 +27,7 @@ class BookRepositoryTest {
     @Test
     void findAllBooksByPageRequest() {
         var user = new UserEntity(1L, "Bob", "boB7523", "@BobTg", "Moscow",
-                "Oktyabrsky", new ArrayList<>());
+                "Oktyabrsky", new ArrayList<>(), new ArrayList<>());
         userRepository.save(user);
         bookRepository.save(new BookEntity(1L, "Alice in Wonderland", "Lewis Carroll",
                 1865, 156, 7, "Книга в хорошем состоянии, но" +
@@ -46,7 +46,7 @@ class BookRepositoryTest {
     @Test
     void findByTitleOrAuthorByPageRequest() {
         var user = new UserEntity(1L, "Bob", "boB7523", "@BobTg", "Moscow",
-                "Oktyabrsky", new ArrayList<>());
+                "Oktyabrsky", new ArrayList<>(), new ArrayList<>());
         userRepository.save(user);
         bookRepository.save(new BookEntity(1L, "Alice in Wonderland", "Lewis Carroll",
                 1865, 156, 7, "Книга в хорошем состоянии, но" +

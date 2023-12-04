@@ -3,6 +3,9 @@ package org.myApplication.app.services;
 import org.junit.jupiter.api.Test;
 import org.myApplication.app.entity.BookEntity;
 import org.myApplication.app.entity.UserEntity;
+import org.myApplication.app.filter.CriteriaModel;
+import org.myApplication.domain.enums.Genres;
+import org.myApplication.domain.enums.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static junit.framework.Assert.assertEquals;
@@ -99,10 +103,13 @@ class BookServiceTest {
                 2003, 129, 10, "Книга в идеальном состоянии.", null), 1L);
         bookService.saveBook(new BookEntity(4L, "Book Alice 4", "Author",
                 2001, 21, 3, "Книга в плохом состоянии.", null), 1L);
-        var result = bookService.searchBooks("alic", PageRequest.of(0, 2, Sort.by("publicationYear").ascending()));
+        bookService.saveBook(new BookEntity(5L, "Book Alice 5", "Author",
+                2002, 21, 3, "Книга в плохом состоянии.", null), 1L);
+        var result = bookService.searchBooks(PageRequest.of(0, 2, Sort.by("publicationYear").ascending()),
+                List.of(new CriteriaModel("title", Operation.LIKE, "Alic"), new CriteriaModel("publicationYear", Operation.GE, "2001")));
         assertEquals(2, result.size());
-        assertEquals("Alice in Wonderland", result.get(0).getTitle());
-        assertEquals("Book Alice 4", result.get(1).getTitle());
+        assertEquals("Book Alice 4", result.get(0).getTitle());
+        assertEquals("Book Alice 5", result.get(1).getTitle());
     }
 
     @Test
@@ -117,11 +124,7 @@ class BookServiceTest {
                 2003, 129, 10, "Книга в идеальном состоянии.", null), 1L);
         bookService.saveBook(new BookEntity(4L, "Book Alice 4", "Author",
                 2001, 21, 3, "Книга в плохом состоянии.", null), 1L);
-        var criteriaModel = new ArrayList<String>();
-        criteriaModel.add("publicationYear");
-        criteriaModel.add("LE");
-        criteriaModel.add("2001");
-        var result = bookService.filterBooks(criteriaModel);
+        var result = bookService.filterBooks(List.of(new CriteriaModel("publicationYear", Operation.LE, "2001")));
         assertEquals(2, result.size());
         assertEquals("Alice in Wonderland", result.get(0).getTitle());
         assertEquals("Book Alice 4", result.get(1).getTitle());
@@ -139,11 +142,7 @@ class BookServiceTest {
                 2003, 129, 10, "Книга в идеальном состоянии.", null), 1L);
         bookService.saveBook(new BookEntity(4L, "Book Alice 4", "Author",
                 2001, 21, 3, "Книга в плохом состоянии.", null), 1L);
-        var criteriaModel = new ArrayList<String>();
-        criteriaModel.add("publicationYear");
-        criteriaModel.add("LT");
-        criteriaModel.add("2001");
-        var result = bookService.filterBooks(criteriaModel);
+        var result = bookService.filterBooks(List.of(new CriteriaModel("publicationYear", Operation.LT, "2001")));
         assertEquals(1, result.size());
         assertEquals("Alice in Wonderland", result.get(0).getTitle());
     }
@@ -160,11 +159,7 @@ class BookServiceTest {
                 2003, 129, 10, "Книга в идеальном состоянии.", null), 1L);
         bookService.saveBook(new BookEntity(4L, "Book Alice 4", "Author",
                 2001, 21, 3, "Книга в плохом состоянии.", null), 1L);
-        var criteriaModel = new ArrayList<String>();
-        criteriaModel.add("publicationYear");
-        criteriaModel.add("GE");
-        criteriaModel.add("2003");
-        var result = bookService.filterBooks(criteriaModel);
+        var result = bookService.filterBooks(List.of(new CriteriaModel("publicationYear", Operation.GE, "2003")));
         assertEquals(2, result.size());
         assertEquals("Book Alice 2", result.get(0).getTitle());
         assertEquals("Book 3", result.get(1).getTitle());
@@ -182,11 +177,7 @@ class BookServiceTest {
                 2003, 129, 10, "Книга в идеальном состоянии.", null), 1L);
         bookService.saveBook(new BookEntity(4L, "Book Alice 4", "Author",
                 2001, 21, 3, "Книга в плохом состоянии.", null), 1L);
-        var criteriaModel = new ArrayList<String>();
-        criteriaModel.add("publicationYear");
-        criteriaModel.add("GT");
-        criteriaModel.add("2003");
-        var result = bookService.filterBooks(criteriaModel);
+        var result = bookService.filterBooks(List.of(new CriteriaModel("publicationYear", Operation.GT, "2003")));
         assertEquals(1, result.size());
         assertEquals("Book Alice 2", result.get(0).getTitle());
     }
@@ -203,11 +194,7 @@ class BookServiceTest {
                 2003, 129, 10, "Книга в идеальном состоянии.", null), 1L);
         bookService.saveBook(new BookEntity(4L, "Book Alice 4", "Author",
                 2001, 21, 3, "Книга в плохом состоянии.", null), 1L);
-        var criteriaModel = new ArrayList<String>();
-        criteriaModel.add("title");
-        criteriaModel.add("LIKE");
-        criteriaModel.add("lic");
-        var result = bookService.filterBooks(criteriaModel);
+        var result = bookService.filterBooks(List.of(new CriteriaModel("title", Operation.LIKE, "lic")));
         assertEquals(2, result.size());
         assertEquals("Alice in Wonderland", result.get(0).getTitle());
         assertEquals("Book Alice 4", result.get(1).getTitle());
@@ -225,11 +212,7 @@ class BookServiceTest {
                 2003, 129, 10, "Книга в идеальном состоянии.", null), 1L);
         bookService.saveBook(new BookEntity(4L, "Book Alice 4", "Author",
                 2001, 21, 3, "Книга в плохом состоянии.", null), 1L);
-        var criteriaModel = new ArrayList<String>();
-        criteriaModel.add("title");
-        criteriaModel.add("EQ");
-        criteriaModel.add("Book 2");
-        var result = bookService.filterBooks(criteriaModel);
+        var result = bookService.filterBooks(List.of(new CriteriaModel("title", Operation.EQ, "Book 2")));
         assertEquals(1, result.size());
         assertEquals("Book 2", result.get(0).getTitle());
     }
@@ -246,11 +229,7 @@ class BookServiceTest {
                 2003, 129, 10, "Книга в идеальном состоянии.", null), 1L);
         bookService.saveBook(new BookEntity(4L, "Book Alice 4", "Author",
                 2001, 21, 3, "Книга в плохом состоянии.", null), 1L);
-        var criteriaModel = new ArrayList<String>();
-        criteriaModel.add("title");
-        criteriaModel.add("NOT_NULL");
-        criteriaModel.add(null);
-        var result = bookService.filterBooks(criteriaModel);
+        var result = bookService.filterBooks(List.of(new CriteriaModel("title", Operation.NOT_NULL, null)));
         assertEquals(2, result.size());
         assertEquals("Book 2", result.get(0).getTitle());
         assertEquals("Book Alice 4", result.get(1).getTitle());
@@ -268,11 +247,7 @@ class BookServiceTest {
                 2003, 129, 10, "Книга в идеальном состоянии.", null), 1L);
         bookService.saveBook(new BookEntity(4L, "Book Alice 4", "Author",
                 2001, 21, 3, "Книга в плохом состоянии.", null), 1L);
-        var criteriaModel = new ArrayList<String>();
-        criteriaModel.add("title");
-        criteriaModel.add("NULL");
-        criteriaModel.add(null);
-        var result = bookService.filterBooks(criteriaModel);
+        var result = bookService.filterBooks(List.of(new CriteriaModel("title", Operation.NULL, null)));
         assertEquals(2, result.size());
         assertNull(result.get(0).getTitle());
         assertEquals(2000, result.get(0).getPublicationYear());
@@ -280,8 +255,28 @@ class BookServiceTest {
         assertEquals(2003, result.get(1).getPublicationYear());
     }
 
+    @Test
+    void filterBooks() {
+        userService.saveUser(userOne());
+        bookService.saveBook(new BookEntity(1L, "Alice in Wonderland", "Lewis Carroll",
+                1998, 156, 7, "Книга в хорошем состоянии, но" +
+                " есть потертости.", null), 1L);
+        bookService.saveBook(new BookEntity(2L, "Book 2", "Lewis Carroll",
+                2005, 21, 3, "Книга в плохом состоянии.", null), 1L);
+        bookService.saveBook(new BookEntity(3L, "Dear Alice", "Lewis Carroll",
+                2003, 129, 10, "Книга в идеальном состоянии.", null), 1L);
+        bookService.saveBook(new BookEntity(4L, "Book Alice 4", "Author",
+                2001, 21, 3, "Книга в плохом состоянии.", null), 1L);
+        bookService.saveBook(new BookEntity(5L, "Book Sam 5", "Author",
+                2001, 21, 3, "Книга в плохом состоянии.", null), 1L);
+        var result = bookService.filterBooks(List.of(new CriteriaModel("title", Operation.LIKE, "Alic"),
+                new CriteriaModel("bookCondition", Operation.GE, "7"), new CriteriaModel("publicationYear", Operation.LE, "2000")));
+        assertEquals(1, result.size());
+        assertEquals("Alice in Wonderland", result.get(0).getTitle());
+    }
+
     private static UserEntity userOne() {
         return new UserEntity(1L, "Bob", "boB7523", "@BobTg", "Moscow",
-                "Oktyabrsky", new ArrayList<>());
+                "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
     }
 }

@@ -1,12 +1,11 @@
 package org.myApplication.app.filter;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.myApplication.domain.enums.Operation;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class CriteriaModel {
     private String field;

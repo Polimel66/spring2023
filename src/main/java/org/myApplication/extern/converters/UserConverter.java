@@ -13,6 +13,7 @@ public class UserConverter {
         userEntity.setContact(userModel.getContact());
         userEntity.setCity(userModel.getCity());
         userEntity.setDistrict(userModel.getDistrict());
+        userEntity.setFavoriteGenres(userModel.getFavoriteGenres());
         return userEntity;
     }
 
@@ -23,6 +24,7 @@ public class UserConverter {
         userModel.setContact(userEntity.getContact());
         userModel.setCity(userEntity.getCity());
         userModel.setDistrict(userEntity.getDistrict());
+        userModel.setFavoriteGenres(userEntity.getFavoriteGenres());
         return userModel;
     }
 }

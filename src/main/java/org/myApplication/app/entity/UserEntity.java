@@ -2,6 +2,7 @@ package org.myApplication.app.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.myApplication.domain.enums.Genres;
 import org.myApplication.domain.interfaces.Book;
 
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class UserEntity implements org.myApplication.domain.interfaces.User {
     private String city;
     @Column(name = "user_district")
     private String district;
+    @Column(name = "user_favorite_genres")
+    @Enumerated(EnumType.STRING)
+    private List<Genres> favoriteGenres;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookOwner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookEntity> books = new ArrayList<>();
 

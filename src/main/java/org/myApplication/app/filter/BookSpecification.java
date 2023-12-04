@@ -7,6 +7,7 @@ import org.myApplication.domain.enums.Operation;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.EnumSet;
+import java.util.List;
 
 public class BookSpecification implements Specification<BookEntity> {
     private static final EnumSet<Operation> NULL_OPERATIONS = EnumSet.of(Operation.NULL, Operation.NOT_NULL);
@@ -24,7 +25,7 @@ public class BookSpecification implements Specification<BookEntity> {
      * @param query           общие характеристики запроса
      * @param criteriaBuilder построитель JPQL-выражений
      * @return предикат
-     * (тестирование метода проводится вместе с тестированием метода filterBooks изи сервиса)
+     * (тестирование метода проводится вместе с тестированием метода filterBooks из сервиса)
      */
     @Override
     public Predicate toPredicate(Root<BookEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
@@ -76,5 +77,22 @@ public class BookSpecification implements Specification<BookEntity> {
         if (!NULL_OPERATIONS.contains(operation) && criteriaModel.getValue() == null) {
             throw new IllegalArgumentException("Value must be not null!");
         }
+    }
+
+    /**
+     * Метод формирования единой спецификации по заданному ранее списку фильтров
+     *
+     * @param criteriaModels список фильтров
+     * @return возвращает полученную спецификацию
+     * (тестирование метода проводится вместе с тестированием методов filterBooks и searchBooks из сервиса)
+     */
+    public static Specification<BookEntity> getSpecificationFromListFilters(List<CriteriaModel> criteriaModels) {
+        if (criteriaModels.isEmpty())
+            return null;
+        Specification<BookEntity> result = new BookSpecification(criteriaModels.get(0));
+        for (int i = 1; i < criteriaModels.size(); i++) {
+            result = Specification.where(result).and(new BookSpecification(criteriaModels.get(i)));
+        }
+        return result;
     }
 }

@@ -1,6 +1,10 @@
 package org.myApplication.domain.interfaces;
 
 
+import org.myApplication.domain.enums.Genres;
+
+import java.util.List;
+
 /**
  * Интерфейс основного класса, реализующего понятие пользователь
  *
@@ -59,5 +63,11 @@ public interface User {
      * @param book добавляемая книга
      */
     void addBook(Book book);
-//    List<Genres> getFavoriteGenres(); пока думаю как правильнее сделать, список любимых жанров
+
+    /**
+     * Метод получения любимых жанров пользователя
+     *
+     * @return список жанров
+     */
+    List<Genres> getFavoriteGenres();
 }
