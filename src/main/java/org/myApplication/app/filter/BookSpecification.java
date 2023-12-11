@@ -82,16 +82,16 @@ public class BookSpecification implements Specification<BookEntity> {
     /**
      * Метод формирования единой спецификации по заданному ранее списку фильтров
      *
-     * @param criteriaModels список фильтров
+     * @param filters список фильтров
      * @return возвращает полученную спецификацию
      * (тестирование метода проводится вместе с тестированием методов filterBooks и searchBooks из сервиса)
      */
-    public static Specification<BookEntity> getSpecificationFromListFilters(List<CriteriaModel> criteriaModels) {
-        if (criteriaModels.isEmpty())
-            return null;
-        Specification<BookEntity> result = new BookSpecification(criteriaModels.get(0));
-        for (int i = 1; i < criteriaModels.size(); i++) {
-            result = Specification.where(result).and(new BookSpecification(criteriaModels.get(i)));
+    public static Specification<BookEntity> getFullSpecification(List<CriteriaModel> filters) {
+        if (filters.isEmpty())
+            return new BookSpecification(new CriteriaModel("title", Operation.NOT_NULL, null));
+        Specification<BookEntity> result = new BookSpecification(filters.get(0));
+        for (int i = 1; i < filters.size(); i++) {
+            result = Specification.where(result).and(new BookSpecification(filters.get(i)));
         }
         return result;
     }

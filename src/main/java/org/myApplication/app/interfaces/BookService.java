@@ -45,25 +45,25 @@ public interface BookService {
     /**
      * Метод постраничного получения книг из базы данных
      *
-     * @param newPageable параметры пагинации
+     * @param pageable параметры пагинации
      * @return возвращает книги из бд по заданным параметрам
      */
-    List<BookEntity> findAllBooks(Pageable newPageable);
+    List<BookEntity> findAllBooks(Pageable pageable);
 
     /**
      * Метод поиска книг с фильтрацией и сортировкой
      *
-     * @param newPageable    параметры пагинации
-     * @param criteriaModels фильтры
+     * @param pageable параметры пагинации
+     * @param filters  фильтры
      * @return возвращает список необходимых отфильтрованных и отсортированных по заданным параметрам книг
      */
-    List<BookEntity> searchBooks(Pageable newPageable, List<CriteriaModel> criteriaModels);
+    List<BookEntity> searchBooks(Pageable pageable, List<CriteriaModel> filters);
 
     /**
      * Метод получения отфильтрованных книг
      *
-     * @param criteriaModels фильтры
+     * @param filters фильтры
      * @return список отфильтрованных книг
      */
-    List<BookEntity> filterBooks(List<CriteriaModel> criteriaModels);
+    List<BookEntity> filterBooks(List<CriteriaModel> filters);
 }

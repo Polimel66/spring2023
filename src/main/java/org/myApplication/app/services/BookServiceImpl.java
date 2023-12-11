@@ -64,29 +64,41 @@ public class BookServiceImpl implements org.myApplication.app.interfaces.BookSer
     }
 
     @Override
-    public List<BookEntity> findAllBooks(Pageable newPageable) {
-        var sortParameters = newPageable.getSort().toList().get(0);
-        var result = bookRepository.findAllBooksByPageRequest(PageRequest.of(newPageable.getPageNumber(), newPageable.getPageSize(),
-                Sort.by(sortParameters.getDirection(), sortParameters.getProperty())));
+    public List<BookEntity> findAllBooks(Pageable pageable) {
+        var sortParameters = pageable.getSort().toList().get(0);
+        var sort = Sort.by(
+                sortParameters.getDirection(),
+                sortParameters.getProperty());
+        var pageRequest = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                sort);
+        var result = bookRepository.findAllBooksByPageRequest(pageRequest);
         log.info("Все нужные книги с заданной страницы найдены");
         return result;
     }
 
     @Override
-    public List<BookEntity> searchBooks(Pageable newPageable, List<CriteriaModel> criteriaModels) {
-        var sortParameters = newPageable.getSort().toList().get(0);
-        var generalCriteria = BookSpecification.getSpecificationFromListFilters(criteriaModels);
-        assert generalCriteria != null;
-        var result = bookRepository.findAll(generalCriteria, PageRequest.of(newPageable.getPageNumber(), newPageable.getPageSize(), Sort.by(sortParameters.getDirection(),
-                sortParameters.getProperty()))).toList();
+    public List<BookEntity> searchBooks(Pageable pageable, List<CriteriaModel> filters) {
+        var sortParameters = pageable.getSort().toList().get(0);
+        var generalCriteria = BookSpecification.getFullSpecification(filters);
+        var sort = Sort.by(
+                sortParameters.getDirection(),
+                sortParameters.getProperty());
+        var pageRequest = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                sort);
+        var result = bookRepository
+                .findAll(generalCriteria, pageRequest)
+                .toList();
         log.info("Книги по данному запросу найдены");
         return result;
     }
 
     @Override
-    public List<BookEntity> filterBooks(List<CriteriaModel> criteriaModels) {
-        var generalCriteria = BookSpecification.getSpecificationFromListFilters(criteriaModels);
-        assert generalCriteria != null;
+    public List<BookEntity> filterBooks(List<CriteriaModel> filters) {
+        var generalCriteria = BookSpecification.getFullSpecification(filters);
         var result = bookRepository.findAll(generalCriteria);
         log.info("Книги найдены и отфильтрованы");
         return result;

@@ -35,15 +35,15 @@ public class BookController {
     }
 
     @GetMapping("/findAll")
-    public List<BookModel> getAllBooks(Pageable newPageable) {
-        return bookService.findAllBooks(newPageable).stream()
+    public List<BookModel> getAllBooks(Pageable pageable) {
+        return bookService.findAllBooks(pageable).stream()
                 .map(bookEntity -> bookConverter.toModel(bookEntity)).collect(Collectors.toList());
     }
 
     @GetMapping("/searchBook")
-    public List<BookModel> searchBooks(Pageable newPageable,
-                                       @RequestBody List<CriteriaModel> criteriaModels) {
-        return bookService.searchBooks(newPageable, criteriaModels).stream()
+    public List<BookModel> searchBooks(Pageable pageable,
+                                       @RequestBody List<CriteriaModel> filters) {
+        return bookService.searchBooks(pageable, filters).stream()
                 .map(bookEntity -> bookConverter.toModel(bookEntity))
                 .collect(Collectors.toList());
     }
@@ -54,8 +54,8 @@ public class BookController {
     }
 
     @GetMapping("/filter")
-    public List<BookModel> filterBooks(@RequestBody List<CriteriaModel> criteriaModels) {
-        return bookService.filterBooks(criteriaModels).stream()
+    public List<BookModel> filterBooks(@RequestBody List<CriteriaModel> filters) {
+        return bookService.filterBooks(filters).stream()
                 .map(bookEntity -> bookConverter.toModel(bookEntity)).collect(Collectors.toList());
     }
 }

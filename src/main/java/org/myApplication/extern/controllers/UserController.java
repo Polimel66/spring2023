@@ -57,4 +57,14 @@ public class UserController {
         return userService.findUserById(id).get().getBooks().stream()
                 .map(bookEntity -> bookConverter.toModel(bookEntity)).collect(Collectors.toList());
     }
+
+    @GetMapping("/")
+    public String home() {
+        return "Hello, User Home!";
+    }
+
+    @GetMapping("/secured")
+    public String secured() {
+        return "Hello, User Secured!";
+    }
 }
