@@ -81,7 +81,6 @@
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
             <version>3.2.0</version>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>
