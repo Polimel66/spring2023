@@ -1,9 +1,9 @@
 package org.myApplication.domain.interfaces;
 
 /**
- * Интерфейс основного класса, реализующего понятие книга
+ * Книга
  *
- * @autor Мельникова Полина
+ * @author Мельникова Полина
  */
 public interface Book {
     /**

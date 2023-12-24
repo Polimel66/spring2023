@@ -1,9 +1,9 @@
 package org.myApplication.domain.enums;
 
 /**
- * Enum из операций фильтрации
+ * Операции фильтрации
  *
- * @autor Мельникова Полина
+ * @author Мельникова Полина
  */
 public enum Operation {
     /**

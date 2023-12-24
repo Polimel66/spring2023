@@ -1,7 +1,9 @@
 package org.myApplication.domain.enums;
 
 /**
- * Enum из списка ролей доступа
+ * Роли
+ *
+ * @author Мельникова Полина
  */
 public enum Role {
     /**

@@ -6,9 +6,9 @@ import org.myApplication.domain.enums.Genres;
 import java.util.List;
 
 /**
- * Интерфейс основного класса, реализующего понятие пользователь
+ * Пользователь
  *
- * @autor Мельникова Полина
+ * @author Мельникова Полина
  */
 public interface User {
     /**

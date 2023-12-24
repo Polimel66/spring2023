@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
 
@@ -25,45 +26,21 @@ class BookRepositoryTest {
     private BookRepository bookRepository;
 
     @Test
+    @Sql({"/users_data.sql", "/books_data.sql"})
     void findAllBooksByPageRequest() {
-        var user = new UserEntity(1L, "Bob", "boB7523", "@BobTg", "Moscow",
-                "Oktyabrsky", new ArrayList<>(), new ArrayList<>());
-        userRepository.save(user);
-        bookRepository.save(new BookEntity(1L, "Alice in Wonderland", "Lewis Carroll",
-                1865, 156, 7, "Книга в хорошем состоянии, но" +
-                " есть потертости.", user));
-        bookRepository.save(new BookEntity(2L, "Twilight", "Stephanie Mayer",
-                2001, 123, 8, "Книга в хорошем состоянии, но" +
-                " есть потертости.", user));
-        bookRepository.save(new BookEntity(3L, "Cipollino", "Gianni Rodari",
-                1996, 78, 10, "Книга в идеальном состоянии.", user));
         var resultSearchBooks = bookRepository.findAllBooksByPageRequest(PageRequest.of(0, 2, Sort.by(Sort.Direction.ASC, "publicationYear")));
         assertEquals(2, resultSearchBooks.size());
-        assertEquals("Alice in Wonderland", resultSearchBooks.get(0).getTitle());
-        assertEquals("Cipollino", resultSearchBooks.get(1).getTitle());
+        assertNull(resultSearchBooks.get(0).getTitle());
+        assertEquals("Book Alice 4", resultSearchBooks.get(1).getTitle());
     }
 
     @Test
+    @Sql({"/users_data.sql", "/books_data.sql"})
     void findByTitleOrAuthorByPageRequest() {
-        var user = new UserEntity(1L, "Bob", "boB7523", "@BobTg", "Moscow",
-                "Oktyabrsky", new ArrayList<>(), new ArrayList<>());
-        userRepository.save(user);
-        bookRepository.save(new BookEntity(1L, "Alice in Wonderland", "Lewis Carroll",
-                1865, 156, 7, "Книга в хорошем состоянии, но" +
-                " есть потертости.", user));
-        bookRepository.save(new BookEntity(2L, "Cipollino", "Gianni Rodari",
-                1996, 78, 10, "Книга в идеальном состоянии.", user));
-        bookRepository.save(new BookEntity(3L, "Twilight", "Alice Mayer",
-                2001, 123, 8, "Книга в хорошем состоянии, но" +
-                " есть потертости.", user));
-        bookRepository.save(new BookEntity(4L, "Harry Potter", "J. K. Rowling",
-                1986, 556, 10, "Книга в идеальном состоянии.", user));
-        bookRepository.save(new BookEntity(5L, "Winnie the Pooh", "Alan Milne",
-                1926, 235, 10, "Книга в идеальном состоянии.", user));
         var resultSearchBooks = bookRepository.findByTitleOrAuthorByPageRequest("%Al%", "%Al%",
                 PageRequest.of(0, 2, Sort.by(Sort.Direction.ASC, "publicationYear")));
         assertEquals(2, resultSearchBooks.size());
-        assertEquals("Alice in Wonderland", resultSearchBooks.get(0).getTitle());
-        assertEquals("Winnie the Pooh", resultSearchBooks.get(1).getTitle());
+        assertNull(resultSearchBooks.get(0).getTitle());
+        assertEquals("Book Alice 4", resultSearchBooks.get(1).getTitle());
     }
 }

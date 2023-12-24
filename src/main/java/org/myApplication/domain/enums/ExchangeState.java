@@ -1,9 +1,9 @@
 package org.myApplication.domain.enums;
 
 /**
- * Enum из списка состояний обмена
+ * Состояние обмена
  *
- * @autor Мельникова Полина
+ * @author Мельникова Полина
  */
 public enum ExchangeState {
     /**

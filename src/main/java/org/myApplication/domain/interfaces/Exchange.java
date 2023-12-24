@@ -3,9 +3,9 @@ package org.myApplication.domain.interfaces;
 import org.myApplication.domain.enums.ExchangeState;
 
 /**
- * Интерфейс основного класса, реализующего понятие обмен
+ * Обмен книги
  *
- * @autor Мельникова Полина
+ * @author Мельникова Полина
  */
 public interface Exchange {
     /**

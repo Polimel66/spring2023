@@ -3,14 +3,17 @@ package org.myApplication.app.services;
 import org.junit.jupiter.api.Test;
 import org.myApplication.app.entity.UserEntity;
 import org.myApplication.domain.enums.Genres;
+import org.myApplication.domain.enums.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,8 +26,8 @@ public class UserServiceTest {
     private UserServiceImpl userService;
 
     @Test
+    @Sql({"/users_data.sql"})
     void changeUser() {
-        userService.saveUser(new UserEntity(1L, "Bob", "boB7523", "@BobTg", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>()));
         userService.changeUser(new UserEntity(1L, "Bob", "11111", "@BobTg", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>()), 1L);
         assertEquals("11111", userService.findUserById(1L).get().getPassword());
     }
@@ -38,49 +41,36 @@ public class UserServiceTest {
     }
 
     @Test
+    @Sql({"/users_data.sql"})
     void deleteAllUsers() {
-        var firstUser = new UserEntity(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
-        var secondUser = new UserEntity(2L, "TestBob321", "Test126236", "@TestTg2", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
-        var thirdUser = new UserEntity(3L, "TestSem321", "Test1235986", "@TestTg3", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
-        userService.saveUser(firstUser);
-        userService.saveUser(secondUser);
-        userService.saveUser(thirdUser);
         userService.deleteAllUsers();
         assertEquals(new ArrayList<UserEntity>(), userService.findAllUsers());
     }
 
     @Test
+    @Sql({"/users_data.sql"})
     void findUserById() {
-        UserEntity user = new UserEntity(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
-        userService.saveUser(user);
         var dbUser = userService.findUserById(1L);
         assertNotNull(dbUser);
         assertEquals("TestNick321", dbUser.get().getNickname());
     }
 
     @Test
+    @Sql({"/users_data.sql"})
     void findAllUsers() {
-        var firstUser = new UserEntity(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
-        var secondUser = new UserEntity(2L, "TestBob321", "Test126236", "@TestTg2", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
-        var thirdUser = new UserEntity(3L, "TestSem321", "Test1235986", "@TestTg3", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>());
-        firstUser = userService.saveUser(firstUser);
-        secondUser = userService.saveUser(secondUser);
-        thirdUser = userService.saveUser(thirdUser);
-
         List<UserEntity> usersList = new ArrayList<>();
-        usersList.add(firstUser);
-        usersList.add(secondUser);
-        usersList.add(thirdUser);
-
+        usersList.add(new UserEntity(1L, "TestNick321", "Test128956", "@TestTg", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>()));
+        usersList.add(new UserEntity(2L, "TestBob321", "Test126236", "@TestTg2", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>()));
+        usersList.add(new UserEntity(3L, "TestSem321", "Test1235986", "@TestTg3", "Moscow", "Oktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>()));
         var dbUsers = userService.findAllUsers();
         assertNotNull(dbUsers);
         assertIterableEquals(usersList, dbUsers);
     }
 
     @Test
+    @Sql({"/users_data.sql"})
     void deleteUserById() {
-        userService.saveUser(new UserEntity(1L, "SaveTestNick321", "SaveTest128956", "@SaveTestTg", "SaveMoscow", "SaveOktyabrsky", List.of(Genres.DETECTIVE), new ArrayList<>()));
         userService.deleteUserById(1L);
-        assertEquals(new ArrayList<UserEntity>(), userService.findAllUsers());
+        assertEquals(Optional.empty(), userService.findUserById(1L));
     }
 }

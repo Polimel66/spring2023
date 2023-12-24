@@ -1,9 +1,9 @@
 package org.myApplication.domain.enums;
 
 /**
- * Enum из предлагаемого при регистрации списка жанров
+ * Жанры книг
  *
- * @autor Мельникова Полина
+ * @author Мельникова Полина
  */
 public enum Genres {
     /**
