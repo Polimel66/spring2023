@@ -1,5 +1,6 @@
 package org.myApplication.extern.controllers;
 
+import jakarta.validation.Valid;
 import org.myApplication.app.interfaces.UserService;
 import org.myApplication.extern.converters.BookConverter;
 import org.myApplication.extern.converters.UserConverter;
@@ -22,7 +23,7 @@ public class UserController {
     private BookConverter bookConverter;
 
     @PostMapping
-    public UserModel saveUser(@RequestBody UserModel newUser) {
+    public UserModel saveUser(@RequestBody @Valid UserModel newUser) {
         return userConverter.toModel(userService.saveUser(userConverter.toEntity(newUser)));
     }
 
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public UserModel changeUser(@RequestBody UserModel changedUser, @PathVariable("userId") Long id) {
+    public UserModel changeUser(@RequestBody @Valid UserModel changedUser, @PathVariable("userId") Long id) {
         return userConverter.toModel(userService.changeUser(userConverter.toEntity(changedUser), id));
     }
 

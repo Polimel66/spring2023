@@ -1,5 +1,6 @@
 package org.myApplication.extern.controllers;
 
+import jakarta.validation.Valid;
 import org.myApplication.app.filter.CriteriaModel;
 import org.myApplication.app.interfaces.BookService;
 import org.myApplication.extern.converters.BookConverter;
@@ -20,7 +21,7 @@ public class BookController {
     private BookConverter bookConverter;
 
     @PostMapping("/save/{userId}")
-    public BookModel saveBook(@RequestBody BookModel book, @PathVariable Long userId) {
+    public BookModel saveBook(@RequestBody @Valid BookModel book, @PathVariable Long userId) {
         return bookConverter.toModel(bookService.saveBook(bookConverter.toEntity(book), userId));
     }
 
@@ -49,7 +50,7 @@ public class BookController {
     }
 
     @PutMapping("/{bookId}")
-    public BookModel changeBook(@RequestBody BookModel changedBook, @PathVariable("bookId") Long id) {
+    public BookModel changeBook(@RequestBody @Valid BookModel changedBook, @PathVariable("bookId") Long id) {
         return bookConverter.toModel(bookService.changeBook(bookConverter.toEntity(changedBook), id));
     }
 

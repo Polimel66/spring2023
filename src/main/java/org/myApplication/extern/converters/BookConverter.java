@@ -22,6 +22,7 @@ public class BookConverter {
         bookModel.setTitle(bookEntity.getTitle());
         bookModel.setAuthor(bookEntity.getAuthor());
         bookModel.setPublicationYear(bookEntity.getPublicationYear());
+        bookModel.setPagesNumber(bookEntity.getPagesNumber());
         bookModel.setBookCondition(bookEntity.getBookCondition());
         bookModel.setTextBookCondition(bookEntity.getTextBookCondition());
         return bookModel;
